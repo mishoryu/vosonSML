@@ -5,7 +5,7 @@
 \title{Note: this function is DEPRECATED and will be removed in a future release.
 Please use the \code{Create} function}
 \usage{
-CreateActorNetwork(x, writeToFile)
+CreateActorNetwork(x, writeToFile, directIsolates = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{x}{a data frame of class \code{dataSource}. For Twitter data, it is
@@ -18,6 +18,11 @@ entire data set.}
 \item{writeToFile}{logical. If \code{TRUE} then the network is saved to file
 in current working directory (GRAPHML format), with filename denoting the
 current date/time and the type of network.}
+
+\item{directIsolates}{logical. If \code{TRUE} top level comments will be
+directed to the video creator.}
+
+\item{verbose}{logical. If \code{TRUE} prints processing messages.}
 }
 \value{
 An igraph graph object, with directed and weighted edges.

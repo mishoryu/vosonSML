@@ -337,8 +337,9 @@ function(videoIDs, apiKeyYoutube, verbose, writeToFile, maxComments) {
       }
 
        if (writeToFile=="TRUE" | writeToFile=="true" | writeToFile=="T" | writeToFile==TRUE) {
-         currTime <- format(Sys.time(), "%b_%d_%X_%Y_%Z")
-         currTime <- gsub(":","_",currTime)
+         currTime <- format(Sys.time(), "%b_%d_%H_%M_%S_%Y")
+         #currTime <- format(Sys.time(), "%b_%d_%X_%Y_%Z")
+         #currTime <- gsub(":","_",currTime)
          write.csv(dataCombined,paste0(currTime,"_YoutubeData.csv"))
          cat("YouTube data was written to current working directory, with filename:\n")
          cat(paste0(currTime,"_YoutubeData.csv"))

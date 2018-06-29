@@ -33,6 +33,9 @@
 #' @param writeToFile logical. If \code{TRUE} then the network is saved to file
 #' in current working directory (GRAPHML format), with filename denoting the
 #' current date/time and the type of network.
+#' @param directIsolates logical. If \code{TRUE} top level comments will be
+#' directed to the video creator.
+#' @param verbose logical. If \code{TRUE} prints processing messages.
 #' @return An igraph graph object, with directed and weighted edges.
 #' @note Not all data sources in vosonSML can be used for creating actor
 #' networks.
@@ -82,10 +85,10 @@
 #' }
 #'
 CreateActorNetwork <-
-function(x,writeToFile)
+  function(x, writeToFile, directIsolates=TRUE, verbose=FALSE)
   {
     if (missing(writeToFile)) {
       writeToFile <- FALSE # default = not write to file
     }
-     UseMethod("CreateActorNetwork",x)
-   }
+    UseMethod("CreateActorNetwork", x)
+  }

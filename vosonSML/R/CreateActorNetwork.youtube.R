@@ -65,9 +65,12 @@ function(x,writeToFile) {
 
   if (writeToFile=="TRUE" | writeToFile=="true" | writeToFile=="T" | writeToFile==TRUE) {
     # Output the final network to a graphml file, to import directly into Gephi
-    write.graph(g,paste0(format(Sys.time(), "%a_%b_%d_%X_%Y_%Z"),"_YoutubeActorNetwork.graphml"),format="graphml")
+    output_file_name <- paste0(format(Sys.time(), "%b_%d_%H_%M_%S_%Y"), "_YoutubeActorNetwork.graphml")
+    write_graph(g, output_file_name, format=c("graphml"))    
+    #write.graph(g,paste0(format(Sys.time(), "%a_%b_%d_%X_%Y_%Z"),"_YoutubeActorNetwork.graphml"),format="graphml")
     cat("YouTube actor network was written to current working directory, with filename:\n")
-    cat(paste0(format(Sys.time(), "%a_%b_%d_%X_%Y_%Z"),"_YoutubeActorNetwork.graphml"))
+    #cat(paste0(format(Sys.time(), "%a_%b_%d_%X_%Y_%Z"),"_YoutubeActorNetwork.graphml"))
+    cat(paste0(output_file_name, "\n"))
   }
 
   cat("\nDone!\n") ### DEBUG

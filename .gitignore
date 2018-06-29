@@ -1,6 +1,7 @@
 .RData
 .Rhistory
 .Rproj.user
-*.Rproj
+*.RProj
 *.Rcheck
 cred.R
+.httr-oauth
