@@ -62,40 +62,40 @@
 #' @seealso \code{AuthenticateWithYoutubeAPI} must be run first or no data will
 #' be collected.
 #' @keywords youtube data mining SNA
-#' 
+#'
 CollectDataYoutube <-
 function(videoIDs, apiKeyYoutube, verbose, writeToFile, maxComments) {
-  
+
   if (missing(verbose)) {
     verbose <- FALSE # default to not verbose
   }
-  
+
   if (missing(maxComments)) {
     maxComments <- 10000000000000 # some arbitrary very large number
   }
-  
+
   if (missing(writeToFile)) {
     writeToFile <- FALSE
   }
-  
+
   if (verbose=="TRUE" | verbose=="true" | verbose=="T" | verbose==TRUE ) {
     verbose <- TRUE
   }
-  
+
   if (missing(apiKeyYoutube)) {
     cat("Error. Argument `apiKeyYoutube` is missing. Please specify a valid API key to collect data (i.e. your Google Developer API Key).\n")
     return(NA)
   }
-  
+
   if (missing(videoIDs)) {
     cat("Error. Argument `videoIDs` is missing.\nPlease specify a vector of video IDs to collect data from.\n Hint: to do this you can use the `GetYoutubeVideoIDs` function in this package.")
     return(NA)
   }
-  
+
   apiKey <- apiKeyYoutube # to play nice with existing code
-    
+
   # Start data collection
-  
+
   # Create a dataframe to iteratively store comments from all the videos
   # that the user wants to scrape (i.e. specified in videoIDs)
   # uses 'dummy' data in first row (which is removed later)
@@ -110,25 +110,25 @@ function(videoIDs, apiKeyYoutube, verbose, writeToFile, maxComments) {
     ReplyToAnotherUser = "FALSE",
     VideoID = "foobarfoobar",
     stringsAsFactors=FALSE)
-  
+
   # Iterate through the videos in videoIDs, adding to dataCombined.
-    
+
   for (k in 1:length(videoIDs)) {
     cat(paste0("Collecting video number: ", k, " of ", length(videoIDs), "\n", sep = "")) # DEBUG
     cat("---------------------------------------------------------------\n")
-    
+
     ############################## Collect comment threads #############################
-    
+
     rObj <- yt_scraper(videoIDs, apiKey, k, verbose)
-    
+
     rObj$scrape_all(maxComments)
 
     ## Make a dataframe out of the results
-    
+
     if (verbose) {
       cat(paste0("\n** Creating data frame from threads of ", videoIDs[k], ".\n\n", sep = ""))
     }
-    
+
     tempData <- lapply(rObj$data, function(x) {
       data.frame(
         Comment = x$snippet$topLevelComment$snippet$textDisplay,
@@ -142,21 +142,21 @@ function(videoIDs, apiKeyYoutube, verbose, writeToFile, maxComments) {
         VideoID = videoIDs[k], # actual reference to API data is: x$snippet$topLevelComment$snippet$videoIDs[k],
         stringsAsFactors = FALSE)
     })
-    
+
     core_df <- do.call("rbind", tempData)
-      
+
     ############################## Collect comment replies #############################
-    
+
     commentIDs <- core_df$CommentId
-    
+
     # only attempt to collect replies for comments we know have replies
     commentIDs_with_replies <- core_df[which(core_df$ReplyCount > 0), ] # column 6
     commentIDs_with_replies <- commentIDs_with_replies$CommentId
-    
+
     cat(paste0("** Collecting replies for ", length(commentIDs_with_replies), " threads with replies. Please be patient.\n", sep = "")) # commentIDs
-    
+
     base_url <- "https://www.googleapis.com/youtube/v3/comments"
-    
+
     # 'dummy' first row of dataframe, for DEBUG purposes (fix later..)
     dataRepliesAll <- data.frame(
       Comment = "foo",
@@ -169,36 +169,36 @@ function(videoIDs, apiKeyYoutube, verbose, writeToFile, maxComments) {
       ReplyToAnotherUser = "FALSE",
       VideoID = videoIDs[k], # API DOESN'T SEEM TO RETURN HERE, no matter anyway
       stringsAsFactors = FALSE)
-    
+
     # for each thread
     total_replies <- 0
     for (i in 1:length(commentIDs_with_replies)) { # commentIDs
-      
+
       api_opts <- list(
         part = "snippet",
         textFormat = "plainText",
         parentId=commentIDs_with_replies[i], # commentIDs
         key = apiKey
       )
-      
+
       init_results <- httr::content(httr::GET(base_url, query = api_opts)) # TODO: should die when there is error
-      
+
       num_items <- length(init_results$items)
-      
+
       if (verbose) {
         if (i == 1) {
           cat("Comment replies ")
         }
-        
+
         cat(paste(num_items, ""))
         flush.console()
       } else {
         cat(".")
-        flush.console()        
+        flush.console()
       }
-        
+
       total_replies <- total_replies + num_items
-      
+
       tempDataReplies <- lapply(init_results$items, function(x) {
         data.frame(
           Comment = x$snippet$textDisplay,
@@ -212,34 +212,34 @@ function(videoIDs, apiKeyYoutube, verbose, writeToFile, maxComments) {
           VideoID = videoIDs[k], # API DOESN'T SEEM TO RETURN HERE, not that it matters
           stringsAsFactors=FALSE)
       })
-      
+
       tempDataRepliesBinded <- do.call("rbind", tempDataReplies)
-      
+
       dataRepliesAll <- rbind(dataRepliesAll, tempDataRepliesBinded)
     }
-    
+
     cat(paste0("\n** Collected replies: ", total_replies, "\n", sep = ""))
     cat(paste0("** Total video comments: ", length(commentIDs) + total_replies, "\n", sep = ""))
     cat("---------------------------------------------------------------\n\n")
-    
+
     ############################## Combine comment threads and replies #############################
-      
+
     # get rid of "dummy" first row
     dataRepliesAll <- dataRepliesAll[-1, ]
-    
+
     # combine the comments and replies dataframes
     dataCombinedTemp <- rbind(core_df, dataRepliesAll)
-    
+
     # APPEND TO THE OVERALL DATAFRAME (I.E. MULTIPLE VIDEO COMMENTS)
     dataCombined <- rbind(dataCombined, dataCombinedTemp)
-    
+
   }
-    
+
   cat(paste0("** Total comments collected for all videos ", nrow(dataCombined)-1, ".\n", sep = ""))
-  
+
   # Remove 'dummy' first row
   dataCombined <- dataCombined[-1, ]
-  
+
   ## Throw Error when no comment can be collected
   if (nrow(dataCombined) == 0) {
     stop(paste0("No comments could be collected from the given video Ids: ", videoIDs, "\n", sep = ""))
@@ -248,59 +248,59 @@ function(videoIDs, apiKeyYoutube, verbose, writeToFile, maxComments) {
   if (verbose) {
     cat("\nCleaning and structuring data. Please be patient.\n")
   }
-  
+
   ############################## Map relations between users into dataframe #############################
-  
+
   ## For each commentsDataNames element, if any commentTexts elements pattern matches
   ## with a commentsDataNames element, then it is a reply/mention:
-  
+
   # isReplyToAnotherUser <- c(rep("FALSE",length(dataCombined$Comment)))
   isReplyToAnotherUser <- dataCombined[, 8]
-  
+
   ### !!!!! Escape any punctuation characters in names when using GREP!!!
   ## From: http://stackoverflow.com/questions/14836754/is-there-an-r-function-to-escape-a-string-for-regex-characters
   ## This uses an R implementation of Perl's `quotemeta` function
-  
+
   usernamesCleaned <- dataCombined$User # vector of user names (speed + readability)
   commentsTextCleaned <- dataCombined$Comment # duplicate of comment text data (speed + readability)
-  
+
   # This function is from the library("Hmisc")
   usernamesCleaned <- escapeRegex(usernamesCleaned)
-  
+
   # NEW WAY (OPTIMISED - better, faster, stronger...)
   dataCombined$ReplyToAnotherUser <- searchCommentsForMentions(commentsTextCleaned, usernamesCleaned)
-  
+
   ## Map the comment replies within PARENT COMMENT THREADS into dataframe
-  
+
   parentsTemp <- which(dataCombined[,7]!="None" & dataCombined[,8]=="FALSE")
-  
+
   if (length(parentsTemp) != 0) {
     for (i in 1:nrow(dataCombined[parentsTemp,])) {
-      
+
       # take the 1st match - we could try to scrape MULTIPLE REPLIES/MENTIONS, but would require re-think.
-      tempMatch <- which(dataCombined[parentsTemp[i], 7]==dataCombined[, 6])[1] 
+      tempMatch <- which(dataCombined[parentsTemp[i], 7]==dataCombined[, 6])[1]
       dataCombined[parentsTemp[i], 8] <- dataCombined[tempMatch, 2]
-      
+
     }
   }
-  
+
   if (writeToFile=="TRUE" | writeToFile=="true" | writeToFile=="T" | writeToFile==TRUE) {
     currTime <- format(Sys.time(), "%b_%d_%H_%M_%S_%Y")
     write.csv(dataCombined,paste0(currTime,"_YoutubeData.csv"))
-    
+
     cat("YouTube data was written to current working directory, with filename:\n")
     cat(paste0(currTime,"_YoutubeData.csv"))
   }
-    
+
   cat("\nDone!\n")
-  
+
   #############################################################################
   # return dataframe to environment
-  
+
   class(dataCombined) <- append(class(dataCombined),c("dataSource","youtube"))
-  
+
   return(dataCombined)
-  
+
   #############################################################################
 }
 
@@ -318,14 +318,14 @@ yt_scraper <- setRefClass(
     done = "logical",
     core_df = "data.frame",
     verbose = "logical"),
-  
+
   methods = list(
     # collect api results for page
     scrape = function() {
-      
+
       # set default api request options
       opts <- api_opts
-      
+
       if (is.null(nextPageToken) || length(trimws(nextPageToken)) == 0L || trimws(nextPageToken) == "") {
         if (page_count >= 1) {
           if (verbose) {
@@ -340,61 +340,61 @@ yt_scraper <- setRefClass(
         }
       } else {
         opts$pageToken <- trimws(nextPageToken)
-        
+
         if (verbose) {
           cat(paste0("-- Value of pageToken: ", opts$pageToken, "\n"))
         }
       }
-      
+
       page_count <<- page_count + 1
-      
+
       res <- httr::content(httr::GET(base_url, query = opts))
-      
+
       if (is.null(res$nextPageToken)) {
         nextPageToken <<- ""
       } else {
         nextPageToken <<- res$nextPageToken
       }
-      
+
       # add threads to data list
       data <<- c(data, res$items)
-      
+
       # return count of threads collected from page
       return(length(res$items))
     },
-    
+
     # collect all video threads until done or max comments reached
     scrape_all = function(maxComments) {
       cat(paste0("** video Id: ", api_opts$videoId ,"\n", sep = ""))
       if (verbose) {
         cat(paste0("   [results per page: ", api_opts$maxResults, " | max comments per video: ", maxComments, "]\n\n", sep = ""))
       }
-      
+
       thread_count <- 0
-      
+
       while (TRUE) {
-        
+
         # collect threads for current page
         thread_count <- scrape()
-        
+
         if (verbose) {
           cat(paste0("-- Collected threads from page: ", thread_count, "\n\n", sep = ""))
-        }        
-        
+        }
+
         if (thread_count == 0 || length(data) > maxComments) {
           done <<- TRUE
           nextPageToken <<- ""
-          
+
           if (length(data) > maxComments) {
             cat(paste0("-- API returned more than max comments. Results truncated to first ", maxComments, " threads.\n", sep = ""))
-            
+
             data <<- data[1:maxComments]
           }
-          
+
           if (verbose) {
-            cat(paste0("-- Done collecting threads.\n\n", sep = "")) 
+            cat(paste0("-- Done collecting threads.\n\n", sep = ""))
           }
-          
+
           break
         }
       }
@@ -403,7 +403,7 @@ yt_scraper <- setRefClass(
       }
       cat(paste0("** Collected threads: ", length(data), "\n", sep = ""))
     },
-    
+
     initialize = function(videoIDs, apiKey, k, verbose = FALSE) {
       base_url <<- "https://www.googleapis.com/youtube/v3/commentThreads/"
       api_opts <<- list(
@@ -422,7 +422,7 @@ yt_scraper <- setRefClass(
       core_df <<- data.frame()
       verbose <<- verbose
     },
-    
+
     reset = function() {
       data <<- list()
       page_count <<- 0
@@ -431,7 +431,7 @@ yt_scraper <- setRefClass(
       done <<- FALSE
       core_df <<- data.frame()
     },
-    
+
     cache_core_data = function() {
       if (nrow(core_df) < unique_count) {
         sub_data <- lapply(data, function(x) {
@@ -443,7 +443,7 @@ yt_scraper <- setRefClass(
             PublishTime = x$snippet$topLevelComment$snippet$publishedAt,
             CommentId = x$snippet$topLevelComment$id,
             stringsAsFactors=FALSE)
-          
+
         })
         core_df <<- do.call("rbind", sub_data)
       } else {
