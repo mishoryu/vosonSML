@@ -1,8 +1,8 @@
 #' @title Reddit API authentication
 #' 
-#' @description Reddit does not require authentication in this version of vosonSML.
+#' @description Reddit does not require authentication in this version of vosonsml.
 #' 
-#' @note Even though reddit does not require authentication in this version of vosonSML the \code{Authenticate} 
+#' @note Even though reddit does not require authentication in this version of vosonsml the \code{authenticate} 
 #' function must still be called to set the \code{socialmedia} identifier. This is used to route to the appropriate 
 #' social media \code{Collect} function.
 #' 
@@ -15,11 +15,11 @@
 #' @examples
 #' \dontrun{
 #' # reddit authentication
-#' redditAuth <- Authenticate("reddit")
+#' redditAuth <- authenticate("reddit")
 #' }
 #' 
 #' @export
-Authenticate.reddit <- function(socialmedia, ...) {
+authenticate.reddit <- function(socialmedia, ...) {
   # no reddit authentication required in this version
   credential <- list(socialmedia = "reddit", auth = NULL)
   class(credential) <- append(class(credential), c("credential", "reddit"))

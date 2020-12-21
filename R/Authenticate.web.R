@@ -1,8 +1,8 @@
 #' @title Web crawler authentication
 #' 
-#' @description Web crawler does not require authentication in this version of vosonSML.
+#' @description Web crawler does not require authentication in this version of vosonsml.
 #' 
-#' @note Even though the web crawler does not require authentication in this version of vosonSML the \code{Authenticate} 
+#' @note Even though the web crawler does not require authentication in this version of vosonsml the \code{authenticate} 
 #' function must still be called to set the \code{socialmedia} identifier. This is used to route to the appropriate 
 #' social media \code{Collect} function.
 #' 
@@ -15,11 +15,11 @@
 #' @examples
 #' \dontrun{
 #' # web authentication
-#' webAuth <- Authenticate("web")
+#' webAuth <- authenticate("web")
 #' }
 #' 
 #' @export
-Authenticate.web <- function(socialmedia, ...) {
+authenticate.web <- function(socialmedia, ...) {
   # no web authentication required in this version
   credential <- list(socialmedia = "web", auth = NULL)
   class(credential) <- append(class(credential), c("credential", "web"))

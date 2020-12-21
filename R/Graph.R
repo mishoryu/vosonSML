@@ -8,7 +8,7 @@
 #' @return An igraph object.
 #' 
 #' @aliases Graph
-#' @name vosonSML::Graph
+#' @name vosonsml::Graph
 #' @export
 Graph <- function(net, directed = TRUE, writeToFile = FALSE, ...) {
   cat("Creating igraph network graph...")

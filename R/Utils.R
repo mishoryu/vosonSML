@@ -1,7 +1,7 @@
 # get package version
 getVosonSMLVer <- function() {
-  if ("vosonSML" %in% loadedNamespaces()) {
-    return(utils::packageVersion("vosonSML"))
+  if ("vosonsml" %in% loadedNamespaces()) {
+    return(utils::packageVersion("vosonsml"))
   }
   "unknown"
 }

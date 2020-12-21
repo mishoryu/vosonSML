@@ -41,7 +41,7 @@ Create.default <- function(datasource, type, ...) {
   # check if function exists for network type
   # todo: perhaps search create methods so this can be extensible
   func_name <- paste0("Create", ".", type)
-  if (!exists(func_name, where = asNamespace("vosonSML"), mode = "function")) {
+  if (!exists(func_name, where = asNamespace("vosonsml"), mode = "function")) {
     stop("Unknown network type passed to create.", call. = FALSE) 
   }
   

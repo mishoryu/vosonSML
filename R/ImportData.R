@@ -2,7 +2,7 @@
 #'
 #' @description Imports collected data from file or dataframe. Ensures \code{datasource} and specified 
 #' \code{socialmedia} type are set so data is usable by \code{\link{Create}} functions. Not required
-#' if collected data was collected by \code{vosonSML} and saved as an \code{rds} file, use \code{\link{readRDS}}
+#' if collected data was collected by \code{vosonsml} and saved as an \code{rds} file, use \code{\link{readRDS}}
 #' instead.
 #' 
 #' @param file Character string or dataframe. Collected data file path or dataframe object.
@@ -23,7 +23,7 @@
 #' }
 #' 
 #' @aliases ImportData
-#' @name vosonSML::ImportData
+#' @name vosonsml::ImportData
 #' @export
 ImportData <- function(file, socialmedia, type = NULL) {
   

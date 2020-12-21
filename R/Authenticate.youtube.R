@@ -15,11 +15,11 @@
 #' # youtube authentication with google developer api key
 #' myAPIKey <- "xxxxxxxxxxxx"
 #' 
-#' youtubeAuth <- Authenticate("youtube", apiKey = myAPIKey)
+#' youtubeAuth <- authenticate("youtube", apiKey = myAPIKey)
 #' }
 #' 
 #' @export
-Authenticate.youtube <- function(socialmedia, apiKey, ...) {
+authenticate.youtube <- function(socialmedia, apiKey, ...) {
   if (missing(apiKey)) {
     stop("Missing youtube API key.", call. = FALSE)
   }

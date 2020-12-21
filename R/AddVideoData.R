@@ -12,7 +12,7 @@
 #' and \code{$videos} nodes and edges include columns for additional video data.
 #' 
 #' @aliases AddVideoData
-#' @name vosonSML::AddVideoData
+#' @name vosonsml::AddVideoData
 #' @export
 AddVideoData <- function(net, youtubeAuth = NULL, ...) {
   cat("Adding video data to network...")
@@ -80,7 +80,7 @@ AddVideoData.actor.default <- function(net, youtubeAuth = NULL, ...) {
 #' }
 #' 
 #' @aliases AddVideoData.actor.youtube
-#' @name vosonSML::AddVideoData.actor.youtube
+#' @name vosonsml::AddVideoData.actor.youtube
 #' @export
 AddVideoData.actor.youtube <- function(net, youtubeAuth = NULL, videoIds = NULL, actorSubOnly = FALSE, ...) {
   

@@ -14,7 +14,7 @@
 #' @return A vector of youtube video ids as character strings that were extracted from input video urls.
 #' 
 #' @aliases GetYoutubeVideoIDs
-#' @name vosonSML::GetYoutubeVideoIDs
+#' @name vosonsml::GetYoutubeVideoIDs
 #' @export
 GetYoutubeVideoIDs <- function(urls = NULL, file = NULL) {
   video_ids <- c()

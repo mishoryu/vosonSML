@@ -24,7 +24,7 @@
 #' }
 #' 
 #' @aliases AddText
-#' @name vosonSML::AddText
+#' @name vosonsml::AddText
 #' @export
 AddText <- function(net, data, ...) {
   cat("Adding text to network...")
@@ -108,7 +108,7 @@ AddText.activity.youtube <- function(net, data, ...) {
 #' including columns containing text data.
 #'
 #' @aliases AddText.activity.reddit
-#' @name vosonSML::AddText.activity.reddit
+#' @name vosonsml::AddText.activity.reddit
 #' @export
 AddText.activity.reddit <- function(net, data, cleanText = FALSE, ...) {
   # data <- tibble::as_tibble(data)
@@ -200,7 +200,7 @@ AddText.actor.twitter <- function(net, data, ...) {
 #' }
 #' 
 #' @aliases AddText.actor.youtube
-#' @name vosonSML::AddText.actor.youtube
+#' @name vosonsml::AddText.actor.youtube
 #' @export
 AddText.actor.youtube <- function(net, data, repliesFromText = FALSE, atRepliesOnly = TRUE, ...) {
   # data <- tibble::as_tibble(data)
@@ -254,7 +254,7 @@ AddText.actor.youtube <- function(net, data, repliesFromText = FALSE, atRepliesO
 #' including columns containing text data.
 #'
 #' @aliases AddText.actor.reddit
-#' @name vosonSML::AddText.actor.reddit
+#' @name vosonsml::AddText.actor.reddit
 #' @export
 AddText.actor.reddit <- function(net, data, cleanText = FALSE, ...) {
   # data <- tibble::as_tibble(data)

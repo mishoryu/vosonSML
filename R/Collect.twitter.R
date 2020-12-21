@@ -41,17 +41,17 @@
 #' \dontrun{
 #' # search and collect 100 recent tweets for the hashtag #auspol
 #' myTwitterData <- twitterAuth %>% 
-#'   Collect(searchTerm = "#auspol", searchType = "recent", numTweets = 100, verbose = TRUE, 
+#'   collect(searchTerm = "#auspol", searchType = "recent", numTweets = 100, verbose = TRUE, 
 #'           includeRetweets = FALSE, retryOnRateLimit = TRUE, writeToFile = TRUE)
 #' }
 #' 
 #' @export
-Collect.twitter <- function(credential, searchTerm = "", searchType = "recent", numTweets = 100, 
+collect.twitter <- function(credential, searchTerm = "", searchType = "recent", numTweets = 100, 
                             includeRetweets = TRUE, retryOnRateLimit = FALSE, writeToFile = FALSE, 
                             verbose = FALSE, ...) {
   
   if (!requireNamespace("rtweet", quietly = TRUE)) {
-    stop("Please install the rtweet package before calling Collect.", call. = FALSE)
+    stop("Please install the rtweet package before calling collect.", call. = FALSE)
   }
   
   cat("Collecting tweets for search query...\n")

@@ -10,7 +10,7 @@
 #' @param waitTime Numeric vector. Time range in seconds to select random wait from in-between url collection requests.
 #' Minimum is 3 seconds. Default is \code{c(3, 10)} for a wait time chosen from between 3 and 10 seconds.
 #' @param ua Character string. Override User-Agent string to use in Reddit thread requests. Default is
-#' \code{option("HTTPUserAgent")} value as set by vosonSML.
+#' \code{option("HTTPUserAgent")} value as set by vosonsml.
 #' @param writeToFile Logical. Write collected data to file. Default is \code{FALSE}.
 #' @param verbose Logical. Output additional information about the data collection. Default is \code{TRUE}.
 #' @param ... Additional parameters passed to function. Not used in this method.
@@ -23,11 +23,11 @@
 #' threadUrls <- c("https://www.reddit.com/r/xxxxxx/comments/xxxxxx/x_xxxx_xxxxxxxxx/")
 #' 
 #' redditData <- redditAuth %>%
-#'   Collect(threadUrls = threadUrls, writeToFile = TRUE)
+#'   collect(threadUrls = threadUrls, writeToFile = TRUE)
 #' }
 #' 
 #' @export
-Collect.reddit <- function(credential, threadUrls, waitTime = c(3, 10), ua = getOption("HTTPUserAgent"),
+collect.reddit <- function(credential, threadUrls, waitTime = c(3, 10), ua = getOption("HTTPUserAgent"),
                            writeToFile = FALSE, verbose = TRUE, ...) {
   
   cat("Collecting comment threads for reddit urls...\n")

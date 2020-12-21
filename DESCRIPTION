@@ -1,4 +1,4 @@
-Package: vosonSML
+Package: vosonsml
 Version: 0.30.00.9000
 Title: Collecting Social Media Data and Generating Networks for Analysis
 Description: A suite of tools for collecting and constructing networks from social media data.
@@ -45,5 +45,5 @@ License: GPL (>= 3)
 RoxygenNote: 7.1.1
 NeedsCompilation: no
 VignetteBuilder: knitr
-URL: https://github.com/vosonlab/vosonSML
-BugReports: https://github.com/vosonlab/vosonSML/issues
+URL: https://github.com/vosonlab/vosonsml
+BugReports: https://github.com/vosonlab/vosonsml/issues
