@@ -78,7 +78,7 @@ Collect.twitter <- function(credential, searchTerm = "", searchType = "recent", 
     remaining <- rtlimit[["remaining"]]
     
     if (!is.null(remaining) && is.numeric(remaining) && (remaining > 0)) {
-      remaining <- remaining * 100 # 100 is num tweets returned per api request
+      remaining <- remaining * 100 # 100 tweets returned per request
       cat(paste0("Requested ", numTweets, " tweets of ", remaining, " in this search rate limit.\n"))
       
       if (retryOnRateLimit == TRUE & numTweets < remaining) {
@@ -118,12 +118,12 @@ Collect.twitter <- function(credential, searchTerm = "", searchType = "recent", 
     
     results_df$screen_name <- paste0("@", results_df$screen_name)
     cat("\n")
-    printResultTable(results_df)
+    print_summary(results_df)
   }
   cat(paste0("Collected ", nrow(tweets_df), " tweets.\n"))
   
   class(tweets_df) <- append(c("datasource", "twitter"), class(tweets_df))
-  if (writeToFile) { writeOutputFile(tweets_df, "rds", "TwitterData") }
+  if (writeToFile) { write_output_file(tweets_df, "rds", "TwitterData") }
   
   cat("Done.\n")
   

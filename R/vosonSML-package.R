@@ -24,7 +24,7 @@
 #' @import httr
 #' @import methods
 #' @import RCurl
-#' @importFrom data.table data.table setkey ':='
+#' @importFrom data.table data.table setkey ':=' fcase fifelse
 #' @importFrom dplyr rename group_by summarise ungroup left_join select mutate filter coalesce
 #' row_number distinct anti_join mutate_all mutate_at ends_with vars funs bind_rows arrange
 #' case_when if_else contains n rowwise starts_with count slice

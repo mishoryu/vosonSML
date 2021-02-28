@@ -79,7 +79,7 @@ Collect.reddit <- function(credential, threadUrls, waitTime = c(3, 10), ua = get
       
       results_df$title <- ifelse(nchar(results_df$title) > 42, paste0(strtrim(results_df$title, 42), "..."), 
                                  results_df$title)
-      printResultTable(results_df)
+      print_summary(results_df)
       cat(paste0("Collected ", nrow(threads_df), " total comments.\n"))
     } else {
       cat(paste0("No comments were collected.\n"))
@@ -89,7 +89,7 @@ Collect.reddit <- function(credential, threadUrls, waitTime = c(3, 10), ua = get
   }
   
   class(threads_df) <- append(c("datasource", "reddit"), class(threads_df))
-  if (writeToFile) { writeOutputFile(threads_df, "rds", "RedditData") }
+  if (writeToFile) { write_output_file(threads_df, "rds", "RedditData") }
   
   cat("Done.\n")
   
@@ -174,7 +174,7 @@ reddit_data <- function(url, wait_time, ua, cont = NULL, verbose = TRUE) {
   if (!grepl("\\?ref=search_posts$", url)) { url <- paste0(gsub("/$", "", url), "/?ref=search_posts") }
   
   req_url <- paste0(gsub("\\?ref=search_posts$", "", url), ".json?limit=500&raw_json=1")
-  req_tid <- reddit_tid_from_url(req_url, TRUE)
+  req_tid <- thread_id_from_url(req_url, TRUE)
 
   if (is.null(cont)) { cat(paste0("Request thread: ", req_tid, "\n")) } else {
     if (verbose) { 

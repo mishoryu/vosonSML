@@ -1,14 +1,14 @@
 title: vosonSML
 url: http://vosonlab.github.io/vosonSML
     
-authors:
-  Bryan Gertzel:
-    href: "https://vosonlab.net"
-    html: "<span>VOSON Lab</span>"
+# authors:
+#   Bryan Gertzel:
+#     href: "https://vosonlab.net"
+#     html: "<span>VOSON Lab</span>"
 
-#template:
-#  params:
-#    bootswatch: flatly
+# template:
+#   params:
+#     bootswatch: flatly
     
 navbar:
   structure:

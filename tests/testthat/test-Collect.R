@@ -28,13 +28,13 @@ test_that("Collect.twitter output", {
   expect_gt(nrow(data), 1)
 })
 
-test_that("GetYoutubeVideoIDs output", {
-  expect_output(GetYoutubeVideoIDs(), "Please provide a vector and or file of youtube video urls.")
-  suppress_cat(expect_match(GetYoutubeVideoIDs(c("https://www.youtube.com/watch?v=IVjZMIWhz3Y")), "IVjZMIWhz3Y"))
-  suppress_cat(expect_match(GetYoutubeVideoIDs(c("https://youtu.be/IVjZMIWhz3Y")), "IVjZMIWhz3Y"))
-  expect_output(GetYoutubeVideoIDs(c("https://youtu.be/IVjZMIWhz3Y")), "Extracted 1 video ids.")
-  expect_output(GetYoutubeVideoIDs(c("https://youtu.be/IVjZMIWhz3Y",
-                                     "https://www.youtube.com/watch?v=xxx")), "Extracted 2 video ids.")
+test_that("get_video_ids output", {
+  expect_output(get_video_ids(), "Please provide a vector and or file of youtube video urls.")
+  suppress_cat(expect_match(get_video_ids(c("https://www.youtube.com/watch?v=IVjZMIWhz3Y")), "IVjZMIWhz3Y"))
+  suppress_cat(expect_match(get_video_ids(c("https://youtu.be/IVjZMIWhz3Y")), "IVjZMIWhz3Y"))
+  expect_output(get_video_ids(c("https://youtu.be/IVjZMIWhz3Y")), "Extracted 1 video ids.")
+  expect_output(get_video_ids(c("https://youtu.be/IVjZMIWhz3Y",
+                                "https://www.youtube.com/watch?v=xxx")), "Extracted 2 video ids.")
 })
 
 test_that("Collect.youtube input", {

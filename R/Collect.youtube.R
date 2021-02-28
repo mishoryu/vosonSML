@@ -21,7 +21,7 @@
 #' multiple youtube videos can be requested in a single operation, \code{maxComments} is applied to each individual 
 #' video and not the combined total of comments.
 #' 
-#' To help extract video ids for videos the function \code{\link{GetYoutubeVideoIDs}} can be used. It accepts input of 
+#' To help extract video ids for videos the function \code{\link{get_video_ids}} can be used. It accepts input of 
 #' a vector or file containing video urls and creates a chracter vector suitable as input for the \code{videoIDs} 
 #' parameter.
 #' 
@@ -40,8 +40,8 @@
 #' @examples
 #' \dontrun{
 #' # create a list of youtube video ids to collect on
-#' videoIDs <- GetYoutubeVideoIDs(c("https://www.youtube.com/watch?v=xxxxxxxx", 
-#'                                  "https://youtu.be/xxxxxxxx"))
+#' videoIDs <- get_video_ids(c("https://www.youtube.com/watch?v=xxxxxxxx", 
+#'                             "https://youtu.be/xxxxxxxx"))
 #' 
 #' # collect approximately 200 threads/comments for each youtube video
 #' youtubeData <- youtubeAuth %>% 
@@ -272,7 +272,7 @@ Collect.youtube <- function(credential, videoIDs, verbose = FALSE, writeToFile =
   
   dataCombined <- tibble::as_tibble(dataCombined) # convert type to tibble for package consistency
   class(dataCombined) <- append(c("datasource", "youtube"), class(dataCombined))
-  if (writeToFile) { writeOutputFile(dataCombined, "rds", "YoutubeData") }
+  if (writeToFile) { write_output_file(dataCombined, "rds", "YoutubeData") }
   
   cat("Done.\n")
   flush.console()

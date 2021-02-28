@@ -1,14 +1,15 @@
 #' @title Create networks from social media data
 #'
 #' @description This function creates networks from social media data as produced from \code{\link{Collect}}. 
-#' \code{Create} is the final step of the \code{\link{Authenticate}}, \code{\link{Collect}} and \code{Create} workflow.
+#' \code{create_network} is the final step of the \code{\link{Authenticate}}, \code{\link{Collect}} and 
+#' \code{create_network} workflow.
 #' 
 #' There are four types of networks that can be created from collected data: \code{activity}, \code{actor}, 
 #' \code{twomode} or \code{semantic}.
 #' 
 #' For \code{activity} networks refer to \code{\link{create_network.activity.twitter}}, 
-#' \code{\link{create_network.activity.youtube}} and \code{\link{create_network.activity.reddit}} for parameters and 
-#' usage.
+#' \code{\link{create_network.activity.youtube}} 
+#' and \code{\link{create_network.activity.reddit}} for parameters and usage.
 #' 
 #' For \code{actor} networks refer to \code{\link{create_network.actor.twitter}}, 
 #' \code{\link{create_network.actor.youtube}} and \code{\link{create_network.actor.reddit}}.
@@ -23,96 +24,80 @@
 #' media network creation.
 #'
 #' @export
-Create <- function(datasource, type, ...) {
-  # searches the class list of datasource for matching method
-  UseMethod("Create", type)
+create_network <- function(datasource, type, ...) {
+  UseMethod("create_network", type)
 }
 
 #' @export
-Create.default <- function(datasource, type, ...) {
-  # check datasource
+create_network.default <- function(datasource, type, ...) {
   if (!is.data.frame(datasource)) { stop("Datasource is not a dataframe.", call. = FALSE) }
   if (nrow(datasource) < 1) { stop("Empty datasource passed to create.", call. = FALSE) }
   
-  # check if network type is a character string
   if (!is.character(type)) {
     stop("Create network type should be a character string.", call. = FALSE) 
   }
   
-  # check if function exists for network type
-  # todo: perhaps search create methods so this can be extensible
-  func_name <- paste0("Create", ".", type)
+  func_name <- paste0("create_network", ".", type)
   if (!exists(func_name, where = asNamespace("vosonSML"), mode = "function")) {
     stop("Unknown network type passed to create.", call. = FALSE) 
   }
   
-  # add social media type to value class list
   class(type) <- append(class(type), type)
-  
-  # call create again
-  Create(datasource, type, ...)
+  create_network(datasource, type, ...)
 }
 
 #' @title Create activity networks from social media data
-#'
 #' @noRd
-#' @method Create activity
+#' @method create_network activity
 #' @export
-Create.activity <- function(datasource, type, ...) {
-  # UseMethod("Create.activity", datasource)
+create_network.activity <- function(datasource, type, ...) {
   UseMethod("create_network.activity", datasource)
 }
 
 #' @noRd
 #' @export
-Create.activity.default <- function(datasource, type, ...) {
+create_network.activity.default <- function(datasource, type, ...) {
   stop("Unknown datasource passed to create activity network.", call. = FALSE) 
 }
 
 #' @title Create actor network from social media data
-#'
 #' @noRd
-#' @method Create actor
+#' @method create_network actor
 #' @export
-Create.actor <- function(datasource, type, ...) {
-  # UseMethod("Create.actor", datasource)
+create_network.actor <- function(datasource, type, ...) {
   UseMethod("create_network.actor", datasource)
 }
 
 #' @noRd
 #' @export
-Create.actor.default <- function(datasource, type, ...) {
-  stop("Unknown datasource passed to create.", call. = FALSE) 
-}
-
-#' @title Creates a semantic network from social media data
-#'
-#' @noRd 
-#' @method Create semantic
-#' @export
-Create.semantic <- function(datasource, type, ...) {
-  # UseMethod("Create.semantic", datasource)
-  UseMethod("create_network.semantic", datasource)
-}
-
-#' @noRd
-#' @export
-Create.semantic.default <- function(datasource, type, ...) {
-  stop("Unknown datasource passed to create semantic network.", call. = FALSE) 
+create_network.actor.default <- function(datasource, type, ...) {
+  stop("Unknown datasource passed to create actor network.", call. = FALSE) 
 }
 
 #' @title Create 2-mode networks from social media data
-#'
 #' @noRd
-#' @method Create twomode
+#' @method create_network twomode
 #' @export
-Create.twomode <- function(datasource, type, ...) {
-  # UseMethod("Create.twomode", datasource)
+create_network.twomode <- function(datasource, type, ...) {
   UseMethod("create_network.twomode", datasource)
 }
 
 #' @noRd
 #' @export
-Create.twomode.default <- function(datasource, type, ...) {
+create_network.twomode.default <- function(datasource, type, ...) {
   stop("Unknown datasource passed to create twomode network.", call. = FALSE) 
+}
+
+#' @title Creates a semantic network from social media data
+#' @noRd 
+#' @method create_network semantic
+#' @export
+create_network.semantic <- function(datasource, type, ...) {
+  UseMethod("create_network.semantic", datasource)
+}
+
+#' @noRd
+#' @export
+create_network.semantic.default <- function(datasource, type, ...) {
+  stop("Unknown datasource passed to create semantic network.", call. = FALSE) 
 }

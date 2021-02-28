@@ -20,12 +20,12 @@ Collect <- function(credential, ...) {
   saved_enc <- getOption("encoding")
   saved_ua <- getOption("HTTPUserAgent")
   on.exit({
-    if (timer_pkg) { tictoc::toc(quiet = FALSE, func.toc = collectTocOutput) }
+    if (timer_pkg) { tictoc::toc(quiet = FALSE, func.toc = format_toc) }
     options(encoding = saved_enc)
     options(HTTPUserAgent = saved_ua)
   }, add = TRUE)
   options(encoding = "UTF-8")
-  options(HTTPUserAgent = paste0("vosonSML v.", getVosonSMLVer(), " (R Package)"))
+  options(HTTPUserAgent = paste0("vosonSML v.", version(), " (R Package)"))
   if (timer_pkg) { tictoc::tic(msg = "Elapsed time") }
   
   # searches the class list of credential for matching method

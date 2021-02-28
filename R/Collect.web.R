@@ -46,7 +46,7 @@ Collect.web <- function(credential, pages, writeToFile = FALSE, verbose = TRUE, 
   df_results <- purrr::map_dfr(df_results, dplyr::bind_rows)
   
   class(df_results) <- append(c("datasource", "web"), class(df_results))
-  if (writeToFile) { writeOutputFile(df_results, "rds", "WebData") }
+  if (writeToFile) { write_output_file(df_results, "rds", "WebData") }
   
   cat("Done.\n")
   
